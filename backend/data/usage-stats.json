@@ -1,0 +1,10 @@
+{
+  "totalCalls": 16,
+  "generateCalls": 13,
+  "transformCalls": 3,
+  "lastUsedAt": "2026-04-14T12:47:32.621Z",
+  "totalEstimatedCostUsd": 0.00285,
+  "lastCallCostUsd": 0.000172,
+  "maxCostUsd": 5,
+  "overLimit": false
+}
