@@ -72,7 +72,7 @@ export default function LiveEditor({
             <SkeletonContent />
           </div>
         )}
-        <RichTextEditor value={editorValue} onChange={onEditorChange} />
+        <RichTextEditor value={editorValue} onChange={onEditorChange} onTransform={onTransform} />
       </div>
 
       <div className="editor-footer compact-editor-footer">

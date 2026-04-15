@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { EditorContent, useEditor } from "@tiptap/react";
+import { EditorContent, useEditor, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import {
@@ -11,7 +11,11 @@ import {
   Heading2,
   Undo2,
   Redo2,
-  Eraser
+  Eraser,
+  Wand2,
+  Scissors,
+  Expand,
+  Sparkles
 } from "lucide-react";
 
 // Toolbar buttons are grouped here so the editor component stays easy to extend.
@@ -68,8 +72,7 @@ const toolbarButtons = [
 ];
 
 // Rich text editor based on Tiptap.
-// It accepts HTML content and also returns plain text for easy API use.
-export default function RichTextEditor({ value, onChange }) {
+export default function RichTextEditor({ value, onChange, onTransform }) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -107,8 +110,69 @@ export default function RichTextEditor({ value, onChange }) {
     return <div className="editor-loading">Loading editor...</div>;
   }
 
+  const handleContextAction = (action) => {
+    const { from, to } = editor.state.selection;
+    const selectedText = editor.state.doc.textBetween(from, to, " ");
+    if (selectedText.trim()) {
+      onTransform(action, selectedText);
+    }
+  };
+
   return (
     <div className="tiptap-editor-shell">
+      {editor && (
+        <BubbleMenu
+          className="bubble-menu glass-card"
+          tippyOptions={{ duration: 100 }}
+          editor={editor}
+        >
+          <div className="bubble-menu-inner">
+            <button
+              type="button"
+              className="bubble-btn"
+              onClick={() => handleContextAction("improve")}
+              title="Improve selection"
+            >
+              <Wand2 size={14} />
+              <span>Fix</span>
+            </button>
+            <button
+              type="button"
+              className="bubble-btn"
+              onClick={() => handleContextAction("shorten")}
+              title="Shorten selection"
+            >
+              <Scissors size={14} />
+              <span>Trim</span>
+            </button>
+            <button
+              type="button"
+              className="bubble-btn"
+              onClick={() => handleContextAction("expand")}
+              title="Expand selection"
+            >
+              <Expand size={14} />
+              <span>Grow</span>
+            </button>
+            <div className="bubble-divider" />
+            <button
+              type="button"
+              className={`bubble-btn ${editor.isActive("bold") ? "active" : ""}`}
+              onClick={() => editor.chain().focus().toggleBold().run()}
+            >
+              <Bold size={14} />
+            </button>
+            <button
+              type="button"
+              className={`bubble-btn ${editor.isActive("italic") ? "active" : ""}`}
+              onClick={() => editor.chain().focus().toggleItalic().run()}
+            >
+              <Italic size={14} />
+            </button>
+          </div>
+        </BubbleMenu>
+      )}
+
       <div className="editor-toolbar">
         {toolbarButtons.map((button) => {
           const Icon = button.icon;
