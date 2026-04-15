@@ -15,9 +15,9 @@ async function connectDB() {
 
     console.log("Connected to MongoDB");
     return db; // return db instance if needed elsewhere
-
   } catch (err) {
     console.error("DB connection error:", err);
+    process.exit(1);
   }
 }
 
