@@ -1430,3 +1430,35 @@ select {
   margin: 0 4px;
 }
 
+
+
+/* Cost Progress Bar Styles */
+.cost-chip {
+  flex-direction: column;
+  align-items: stretch !important;
+  gap: 6px !important;
+  min-width: 110px;
+  padding: 8px 12px !important;
+}
+
+.cost-chip-main {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cost-progress-wrap {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.cost-progress-bar {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+  box-shadow: 0 0 6px rgba(77, 230, 255, 0.4);
+}
+
