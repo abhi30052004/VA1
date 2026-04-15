@@ -47,3 +47,19 @@ export async function getCanvaHandoff(payload) {
 export async function getUsageStats() {
   return request("/api/ai/stats");
 }
+
+export async function getHistory() {
+  return request("/api/ai/history");
+}
+
+export async function deleteHistoryItem(id) {
+  return request(`/api/ai/history/${id}`, {
+    method: "DELETE",
+  });
+}
+
+export async function clearServerHistory() {
+  return request("/api/ai/history", {
+    method: "DELETE",
+  });
+}

@@ -10,7 +10,10 @@ import {
   generateContent,
   transformContent,
   getCanvaHandoff,
-  getUsageStats
+  getUsageStats,
+  getHistory,
+  deleteHistoryItem,
+  clearServerHistory
 } from "./api/client";
 import { stripHtml, textToEditorHtml } from "./utils/content";
 
@@ -84,7 +87,7 @@ export default function App() {
   );
 
   useEffect(() => {
-    setHistory(readStoredHistory());
+    refreshHistory();
     refreshUsageStats();
 
     return () => {
@@ -378,15 +381,39 @@ export default function App() {
     scrollToEditor();
   }
 
-  function handleDeleteHistory(itemId) {
-    const nextHistory = history.filter((item) => item.id !== itemId);
-    persistHistory(nextHistory);
-    showToast("Removed!!", "success");
+  async function refreshHistory() {
+    try {
+      const serverHistory = await getHistory();
+      setHistory(serverHistory);
+    } catch (error) {
+      console.warn("Server history fetch failed, using local storage fallback.");
+      const saved = JSON.parse(localStorage.getItem("generation_history") || "[]");
+      setHistory(saved);
+    }
   }
 
-  function handleClearHistory() {
-    persistHistory([]);
-    showToast("History cleared!!", "success");
+  async function handleRemoveHistory(id) {
+    try {
+      await deleteHistoryItem(id);
+      await refreshHistory();
+    } catch (error) {
+      // Fallback for purely local items or failed server call
+      const updated = history.filter((item) => (item.id || item._id) !== id);
+      setHistory(updated);
+      localStorage.setItem("generation_history", JSON.stringify(updated.slice(0, 50)));
+    }
+  }
+
+  async function handleClearHistory() {
+    if (!window.confirm("Are you sure you want to clear your entire history?")) return;
+    try {
+      await clearServerHistory();
+      setHistory([]);
+      localStorage.removeItem("generation_history");
+    } catch (error) {
+      setHistory([]);
+      localStorage.removeItem("generation_history");
+    }
   }
 
   return (
@@ -431,7 +458,7 @@ export default function App() {
           <HistoryPanel
             history={history}
             onSelectHistory={handleSelectHistory}
-            onDeleteHistory={handleDeleteHistory}
+            onDeleteHistory={handleRemoveHistory}
             onClearHistory={handleClearHistory}
           />
 

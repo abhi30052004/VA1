@@ -1315,7 +1315,7 @@ select {
 .autosave-dot {
   width: 6px;
   height: 6px;
-  background: #4de6ff;
+  background: #02d917;
   border-radius: 50%;
   box-shadow: 0 0 8px #4de6ff;
   animation: dotPulse 2s infinite;

@@ -8,17 +8,24 @@ const dbName = process.env.DB_NAME;
 
 const client = new MongoClient(uri);
 
+let db = null;
+
 async function connectDB() {
+  if (db) return db;
   try {
     await client.connect();
-    const db = client.db(dbName);
-
+    db = client.db(dbName);
     console.log("Connected to MongoDB");
-    return db; // return db instance if needed elsewhere
+    return db;
   } catch (err) {
     console.error("DB connection error:", err);
     process.exit(1);
   }
 }
+
+export const getDb = async () => {
+  if (!db) await connectDB();
+  return db;
+};
 
 connectDB();

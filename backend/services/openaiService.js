@@ -1,6 +1,7 @@
 import { ChatOpenAI } from "@langchain/openai";
 import { socialMediaPromptTemplate, transformPromptTemplate } from "../prompts/socialMediaPrompt.js";
 import { incrementUsage } from "./usageService.js";
+import { saveGeneration } from "./historyService.js";
 
 // Shared model instance used for both first-draft generation and refinement.
 const model = new ChatOpenAI({
@@ -42,10 +43,15 @@ export async function generateStructuredContent(payload) {
   const parsed = safeJsonParse(extractResponseText(response));
   const usageStats = await incrementUsage("generate", extractTokenUsage(response));
 
-  return {
+  const result = {
     ...parsed,
     _usage: usageStats
   };
+
+  // Save to MongoDB history
+  await saveGeneration(result, payload);
+
+  return result;
 }
 
 export async function transformGeneratedContent(payload) {
