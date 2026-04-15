@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import aiRoutes from "./routes/aiRoutes.js";
 import { buildCanvaHandoff } from "./services/canvaService.js";
+import "./lib/db.js";
 
 dotenv.config();
 
