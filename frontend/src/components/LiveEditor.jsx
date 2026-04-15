@@ -1,5 +1,6 @@
 import React from "react";
 import { Copy, ExternalLink, Wand2, Scissors, Expand, Sparkles, ClipboardPen } from "lucide-react";
+import SkeletonContent from "./SkeletonContent";
 import RichTextEditor from "./RichTextEditor";
 import { TEMPLATE_META } from "../utils/content";
 
@@ -18,6 +19,7 @@ export default function LiveEditor({
 }) {
   const templateMeta = TEMPLATE_META[selectedTemplate] || TEMPLATE_META.instagram;
   const isBusy = loading || streaming;
+  const showSkeleton = loading && !streaming && !editorText.trim();
 
   return (
     <section ref={sectionRef} className="workspace-panel glass-card editor-panel-shell">
@@ -41,30 +43,37 @@ export default function LiveEditor({
         </div>
 
         <div className="quick-actions">
-          <button type="button" className="icon-btn" onClick={() => onTransform("improve")}>
+          <button type="button" className="icon-btn" onClick={() => onTransform("improve")} disabled={isBusy}>
             <Wand2 size={16} />
             Improve
           </button>
-          <button type="button" className="icon-btn" onClick={() => onTransform("shorten")}>
+          <button type="button" className="icon-btn" onClick={() => onTransform("shorten")} disabled={isBusy}>
             <Scissors size={16} />
             Shorter
           </button>
-          <button type="button" className="icon-btn" onClick={() => onTransform("expand")}>
+          <button type="button" className="icon-btn" onClick={() => onTransform("expand")} disabled={isBusy}>
             <Expand size={16} />
             Expand
           </button>
-          <button type="button" className="icon-btn" onClick={onCopy}>
+          <button type="button" className="icon-btn" onClick={onCopy} disabled={isBusy}>
             <Copy size={16} />
             Copy
           </button>
-          <button type="button" className="icon-btn primary-icon-btn" onClick={onCanva}>
+          <button type="button" className="icon-btn primary-icon-btn" onClick={onCanva} disabled={isBusy}>
             <ExternalLink size={16} />
             Canva
           </button>
         </div>
       </div>
 
-      <RichTextEditor value={editorValue} onChange={onEditorChange} />
+      <div className="editor-relative-container">
+        {showSkeleton && (
+          <div className="editor-skeleton-overlay">
+            <SkeletonContent />
+          </div>
+        )}
+        <RichTextEditor value={editorValue} onChange={onEditorChange} />
+      </div>
 
       <div className="editor-footer compact-editor-footer">
         <div className="editor-stat-row compact-editor-stats">

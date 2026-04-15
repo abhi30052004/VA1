@@ -19,6 +19,11 @@ export default function Header({ usageStats, selectedTemplate }) {
       </div>
 
       <div className="topbar-chips">
+        <div className="autosave-status">
+          <div className="autosave-dot" />
+          <span>Cloud Sync Active</span>
+        </div>
+
         <div className="topbar-chip topbar-chip-accent">
           <span>{templateMeta.label}</span>
         </div>
