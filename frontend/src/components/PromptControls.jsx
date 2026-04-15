@@ -1,8 +1,47 @@
 import React from "react";
-import { SlidersHorizontal } from "lucide-react";
+import { 
+  SlidersHorizontal, 
+  Briefcase, 
+  Smile, 
+  Crown, 
+  Zap, 
+  Type, 
+  AlignLeft, 
+  AlignCenter, 
+  AlignJustify,
+  Layers
+} from "lucide-react";
+import CustomDropdown from "./CustomDropdown";
+import { TEMPLATE_LIST } from "../utils/content";
 
-// Small quick-controls block for format, voice, and output size.
-export default function PromptControls({ form, onChange, templateMeta }) {
+const VOICE_OPTIONS = [
+  { value: "professional", label: "Professional", icon: Briefcase, description: "Formal and authority-focused" },
+  { value: "friendly", label: "Friendly", icon: Smile, description: "Warm and conversational" },
+  { value: "premium", label: "Premium", icon: Crown, description: "Elegant and sophisticated" },
+  { value: "minimal", label: "Minimal", icon: Type, description: "Clear and direct" },
+  { value: "bold", label: "Bold", icon: Zap, description: "Punchy and energetic" },
+];
+
+const SIZE_OPTIONS = [
+  { value: "short", label: "Short", icon: AlignLeft, description: "~50-100 words" },
+  { value: "medium", label: "Medium", icon: AlignCenter, description: "~150-300 words" },
+  { value: "long", label: "Long", icon: AlignJustify, description: "400+ words" },
+];
+
+export default function PromptControls({ form, onChange, templateMeta, onSelectTemplate, selectedTemplate }) {
+  const handleDropdownChange = (name, value) => {
+    onChange({
+      target: { name, value }
+    });
+  };
+
+  const formatOptions = TEMPLATE_LIST.map(t => ({
+    value: t.id,
+    label: t.label,
+    icon: t.icon,
+    description: t.badge
+  }));
+
   return (
     <div className="compact-controls panel-block">
       <div className="compact-controls-title compact-heading-row">
@@ -12,33 +51,30 @@ export default function PromptControls({ form, onChange, templateMeta }) {
         </div>
       </div>
 
-      <div className="compact-controls-grid quick-controls-grid clean-two-col-controls">
-        <label>
-          Format
-          <div className="quick-control-readonly quick-control-simple">
-            <strong>{templateMeta.label}</strong>
-          </div>
-        </label>
+      <div className="compact-controls-grid quick-controls-grid three-col-grid clean-two-col-controls">
+        <CustomDropdown
+          label="Format"
+          value={selectedTemplate}
+          options={formatOptions}
+          onChange={onSelectTemplate}
+          icon={Layers}
+        />
 
-        <label>
-          Brand voice
-          <select name="brandVoice" value={form.brandVoice} onChange={onChange}>
-            <option value="professional">Professional</option>
-            <option value="friendly">Friendly</option>
-            <option value="premium">Premium</option>
-            <option value="minimal">Minimal</option>
-            <option value="bold">Bold</option>
-          </select>
-        </label>
+        <CustomDropdown
+          label="Brand voice"
+          value={form.brandVoice}
+          options={VOICE_OPTIONS}
+          onChange={(val) => handleDropdownChange("brandVoice", val)}
+          icon={Smile}
+        />
 
-        <label>
-          Content size
-          <select name="length" value={form.length} onChange={onChange}>
-            <option value="short">Short</option>
-            <option value="medium">Medium</option>
-            <option value="long">Long</option>
-          </select>
-        </label>
+        <CustomDropdown
+          label="Content size"
+          value={form.length}
+          options={SIZE_OPTIONS}
+          onChange={(val) => handleDropdownChange("length", val)}
+          icon={AlignLeft}
+        />
       </div>
     </div>
   );

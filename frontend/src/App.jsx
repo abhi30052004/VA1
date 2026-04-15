@@ -400,6 +400,7 @@ export default function App() {
             onSubmit={handleGenerate}
             loading={loading}
             selectedTemplate={selectedTemplate}
+            onSelectTemplate={setSelectedTemplate}
           />
 
           <LiveEditor

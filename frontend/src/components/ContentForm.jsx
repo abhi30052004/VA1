@@ -3,12 +3,18 @@ import PromptControls from "./PromptControls";
 import { TEMPLATE_META } from "../utils/content";
 
 // Main brief form: only the few inputs needed before generation.
-export default function ContentForm({ form, onChange, onSubmit, loading, selectedTemplate }) {
+export default function ContentForm({ form, onChange, onSubmit, loading, selectedTemplate, onSelectTemplate }) {
   const templateMeta = TEMPLATE_META[selectedTemplate] || TEMPLATE_META.instagram;
 
   return (
     <section className="workspace-panel glass-card">
-      <PromptControls form={form} onChange={onChange} templateMeta={templateMeta} />
+      <PromptControls
+        form={form}
+        onChange={onChange}
+        templateMeta={templateMeta}
+        onSelectTemplate={onSelectTemplate}
+        selectedTemplate={selectedTemplate}
+      />
 
       <div className="panel-block compact-brief-block">
         <div className="block-heading compact-heading-row">
