@@ -1349,3 +1349,27 @@ select {
   flex-direction: column;
 }
 
+
+
+/* Caret Streaming Styles */
+.streaming-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: #4de6ff;
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: caretBlink 0.8s internal infinite;
+  box-shadow: 0 0 8px #4de6ff;
+}
+
+@keyframes caretBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Ensure the editor can render the HTML caret correctly during streaming */
+.tiptap-surface span.streaming-caret {
+  pointer-events: none;
+}
+

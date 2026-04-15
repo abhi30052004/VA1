@@ -5,6 +5,7 @@ import ContentForm from "./components/ContentForm";
 import LiveEditor from "./components/LiveEditor";
 import SuggestionPanel from "./components/SuggestionPanel";
 import HistoryPanel from "./components/HistoryPanel";
+import AnimatedBackground from "./components/AnimatedBackground";
 import {
   generateContent,
   transformContent,
@@ -200,10 +201,18 @@ export default function App() {
 
       built = `${built} ${words.slice(index, index + chunkSize).join(" ")}`.trim();
       setEditorText(built);
-      setEditorValue(textToEditorHtml(built));
+      
+      const htmlContent = textToEditorHtml(built);
+      // Inject caret into the last paragraph or append it
+      const withCaret = htmlContent.endsWith("</p>") 
+        ? htmlContent.replace(/<\/p>$/, '<span class="streaming-caret"></span></p>')
+        : htmlContent + '<span class="streaming-caret"></span>';
+      
+      setEditorValue(withCaret);
       await wait(30);
     }
 
+    setEditorValue(textToEditorHtml(nextText));
     setStreaming(false);
   }
 
@@ -382,6 +391,7 @@ export default function App() {
 
   return (
     <div className="app-shell">
+      <AnimatedBackground />
       <div className="page-blur page-blur-one" />
       <div className="page-blur page-blur-two" />
 
