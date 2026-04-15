@@ -27,6 +27,16 @@ export default function Header({ usageStats, selectedTemplate }) {
           <Activity size={16} />
           <span>{usageStats?.totalCalls || 0} OpenAI hits</span>
         </div>
+
+        <div className="topbar-chip">
+          <span className="chip-label-dim">Last:</span>
+          <strong>${(usageStats?.lastCallCostUsd || 0).toFixed(4)}</strong>
+        </div>
+
+        <div className="topbar-chip topbar-chip-accent">
+          <span className="chip-label-dim">Total:</span>
+          <strong>${(usageStats?.totalEstimatedCostUsd || 0).toFixed(3)}</strong>
+        </div>
       </div>
     </header>
   );

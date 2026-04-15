@@ -1245,3 +1245,17 @@ select {
   }
 }
 
+
+
+/* Header Chip Styles */
+.chip-label-dim {
+  color: #b4bfdf;
+  font-size: 0.85rem;
+  margin-right: 2px;
+}
+
+.topbar-chip strong {
+  font-weight: 600;
+  color: #ffffff;
+}
+
