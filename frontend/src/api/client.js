@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://content-editor-7kc0.onrender.com";
+const API_BASE_URL = "https://va1.onrender.com";
 
 // Generic request helper.
 // Keeps fetch logic in one place for easier maintenance.
