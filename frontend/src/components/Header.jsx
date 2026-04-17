@@ -1,5 +1,5 @@
 import React from "react";
-import { Sparkles, Activity } from "lucide-react";
+import { PenTool, Activity } from "lucide-react";
 import { TEMPLATE_META } from "../utils/content";
 
 // Top header: selected format chip + simple OpenAI hit counter only.
@@ -11,7 +11,7 @@ export default function Header({ usageStats, selectedTemplate }) {
     <header className="topbar glass-card">
       <div className="brand-wrap">
         <div className="brand-icon">
-          <Sparkles size={20} />
+          <PenTool size={20} />
         </div>
         <div>
           <h1>Social Media &amp; Website Support</h1>
