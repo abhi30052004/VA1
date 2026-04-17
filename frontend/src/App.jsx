@@ -16,7 +16,8 @@ import {
   deleteHistoryItem,
   clearServerHistory,
   getBrand,
-  saveBrand
+  saveBrand,
+  deleteBrand
 } from "./api/client";
 import { stripHtml, textToEditorHtml } from "./utils/content";
 
@@ -72,11 +73,7 @@ export default function App() {
     maxCostUsd: 5,
     overLimit: false
   });
-  const [brandData, setBrandData] = useState({
-    companyName: "",
-    mission: "",
-    audience: ""
-  });
+  const [brandProfiles, setBrandProfiles] = useState([]);
   const [activeTab, setActiveTab] = useState("generator");
   const [result, setResult] = useState(initialResultState);
 
@@ -180,7 +177,7 @@ export default function App() {
   async function refreshBrand() {
     try {
       const data = await getBrand();
-      if (data) setBrandData(data);
+      if (Array.isArray(data)) setBrandProfiles(data);
     } catch (_error) {
       console.error("Failed to load brand data.");
     }
@@ -189,10 +186,20 @@ export default function App() {
   async function handleSaveBrand(updated) {
     try {
       const saved = await saveBrand(updated);
-      setBrandData(saved);
-      showToast("Brand Memory saved!!", "success");
+      setBrandProfiles((prev) => [saved, ...prev]);
+      showToast("Brand identity added!!", "success");
     } catch (error) {
       showToast("Failed to save brand memory!!", "error");
+    }
+  }
+
+  async function handleDeleteBrand(id) {
+    try {
+      await deleteBrand(id);
+      setBrandProfiles((prev) => prev.filter(b => (b._id || b.id) !== id));
+      showToast("Brand identity deleted!!", "success");
+    } catch (error) {
+      showToast("Failed to delete brand!!", "error");
     }
   }
 
@@ -463,7 +470,11 @@ export default function App() {
 
         <section className="main-column main-column-wide">
           {activeTab === "brand" ? (
-            <BrandMemory initialData={brandData} onSave={handleSaveBrand} />
+            <BrandMemory 
+              profiles={brandProfiles} 
+              onSave={handleSaveBrand} 
+              onDelete={handleDeleteBrand} 
+            />
           ) : (
             <>
               <ContentForm
