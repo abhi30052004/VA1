@@ -36,14 +36,14 @@ export default function Header({ usageStats, selectedTemplate }) {
 
         <div className="topbar-chip">
           <span className="chip-label-dim">Last:</span>
-          <strong>${(usageStats?.lastCallCostUsd || 0).toFixed(4)}</strong>
+          <strong>${(usageStats?.lastCallCostUsd || 0).toFixed(5)}</strong>
         </div>
 
         <div className="topbar-chip topbar-chip-accent cost-chip">
           <div className="cost-chip-main">
             <span className="chip-label-dim">Total:</span>
             <strong>
-              ${(usageStats?.totalEstimatedCostUsd || 0).toFixed(3)}
+              ${(usageStats?.totalEstimatedCostUsd || 0).toFixed(5)}
             </strong>
           </div>
           <div

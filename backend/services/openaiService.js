@@ -24,7 +24,18 @@ function extractResponseText(response) {
 
 // Reads token usage from the different shapes LangChain/OpenAI may return.
 function extractTokenUsage(response) {
-  const usage = response?.usage_metadata || response?.response_metadata?.tokenUsage || {};
+  // Try usage_metadata first (newer LangChain standardized format)
+  if (response?.usage_metadata) {
+    const um = response.usage_metadata;
+    return {
+      inputTokens: um.input_tokens || um.prompt_tokens || 0,
+      outputTokens: um.output_tokens || um.completion_tokens || 0,
+      totalTokens: um.total_tokens || 0
+    };
+  }
+
+  // Fallback to response_metadata.tokenUsage (some older LangChain versions)
+  const usage = response?.response_metadata?.tokenUsage || response?.response_metadata?.usage || {};
 
   return {
     inputTokens: Number(usage.input_tokens || usage.promptTokens || usage.prompt_tokens || 0),

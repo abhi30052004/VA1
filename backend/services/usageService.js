@@ -8,9 +8,24 @@ const dataDirectory = path.resolve(__dirname, "..", "data");
 const statsFilePath = path.join(dataDirectory, "usage-stats.json");
 
 function getCostConfig() {
+  const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
+  
+  // Default to gpt-4o-mini prices if not overridden by env
+  let inputPer1M = 0.15;
+  let outputPer1M = 0.6;
+
+  // Manual model overrides if not explicitly in .env
+  if (model.includes("gpt-3.5")) {
+    inputPer1M = 0.5;
+    outputPer1M = 1.5;
+  } else if (model.includes("gpt-4o") && !model.includes("mini")) {
+    inputPer1M = 5.0;
+    outputPer1M = 15.0;
+  }
+
   return {
-    inputPer1M: Number(process.env.OPENAI_COST_INPUT_PER_1M || 0.15),
-    outputPer1M: Number(process.env.OPENAI_COST_OUTPUT_PER_1M || 0.6),
+    inputPer1M: Number(process.env.OPENAI_COST_INPUT_PER_1M || inputPer1M),
+    outputPer1M: Number(process.env.OPENAI_COST_OUTPUT_PER_1M || outputPer1M),
     maxTotalCostUsd: Number(process.env.OPENAI_MAX_TOTAL_COST_USD || 5)
   };
 }
@@ -93,5 +108,8 @@ export async function incrementUsage(type, usage = {}) {
   }
 
   await fs.writeFile(statsFilePath, JSON.stringify(currentStats, null, 2), "utf8");
+
+  console.log(`[Usage] Hit # ${currentStats.totalCalls} (${type}) | Cost: $${callCostUsd} | Total: $${currentStats.totalEstimatedCostUsd} | Tokens: In=${usage.inputTokens}, Out=${usage.outputTokens}`);
+
   return currentStats;
 }
