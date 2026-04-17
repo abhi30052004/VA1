@@ -57,7 +57,6 @@ export default function PromptControls({ form, onChange, templateMeta, onSelectT
           value={selectedTemplate}
           options={formatOptions}
           onChange={onSelectTemplate}
-          icon={Layers}
         />
 
         <CustomDropdown
@@ -65,7 +64,6 @@ export default function PromptControls({ form, onChange, templateMeta, onSelectT
           value={form.brandVoice}
           options={VOICE_OPTIONS}
           onChange={(val) => handleDropdownChange("brandVoice", val)}
-          icon={Smile}
         />
 
         <CustomDropdown
@@ -73,7 +71,6 @@ export default function PromptControls({ form, onChange, templateMeta, onSelectT
           value={form.length}
           options={SIZE_OPTIONS}
           onChange={(val) => handleDropdownChange("length", val)}
-          icon={AlignLeft}
         />
       </div>
     </div>

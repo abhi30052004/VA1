@@ -37,9 +37,12 @@ export default function CustomDropdown({ label, value, options, onChange, icon: 
         aria-expanded={isOpen}
       >
         <div className="trigger-content">
-          {Icon && <Icon size={16} className="dropdown-static-icon" />}
-          {!Icon && selectedOption.icon && (
-            <selectedOption.icon size={16} className="option-icon" />
+          {Icon ? (
+            <Icon size={16} className="dropdown-static-icon" />
+          ) : (
+            selectedOption.icon && (
+              <selectedOption.icon size={16} className="option-icon" />
+            )
           )}
           <span className="selected-label">{selectedOption.label}</span>
         </div>
