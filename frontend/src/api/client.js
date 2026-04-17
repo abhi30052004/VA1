@@ -74,3 +74,9 @@ export async function saveBrand(payload) {
     body: JSON.stringify(payload),
   });
 }
+
+export async function deleteBrand(id) {
+  return request(`/api/ai/brand/${id}`, {
+    method: "DELETE",
+  });
+}

@@ -3,7 +3,7 @@ import { validateGenerationPayload, validateTransformPayload } from "../utils/va
 import { generateStructuredContent, transformGeneratedContent } from "../services/openaiService.js";
 import { readUsageStats } from "../services/usageService.js";
 import { getHistory, deleteGeneration, clearHistory } from "../services/historyService.js";
-import { getBrandProfile, saveBrandProfile } from "../services/brandService.js";
+import { getBrandProfiles, saveBrandProfile, deleteBrandProfile } from "../services/brandService.js";
 
 const router = express.Router();
 
@@ -76,10 +76,10 @@ router.delete("/history", async (_req, res) => {
 // Brand memory routes
 router.get("/brand", async (_req, res) => {
   try {
-    const profile = await getBrandProfile();
-    res.json(profile);
+    const profiles = await getBrandProfiles();
+    res.json(profiles);
   } catch (error) {
-    res.status(500).json({ message: "Failed to load brand profile." });
+    res.status(500).json({ message: "Failed to load brand profiles." });
   }
 });
 
@@ -89,6 +89,15 @@ router.post("/brand", async (req, res) => {
     res.json(profile);
   } catch (error) {
     res.status(500).json({ message: "Failed to save brand profile." });
+  }
+});
+
+router.delete("/brand/:id", async (req, res) => {
+  try {
+    await deleteBrandProfile(req.params.id);
+    res.json({ ok: true });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete brand profile." });
   }
 });
 
