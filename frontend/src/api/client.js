@@ -63,3 +63,14 @@ export async function clearServerHistory() {
     method: "DELETE",
   });
 }
+
+export async function getBrand() {
+  return request("/api/ai/brand");
+}
+
+export async function saveBrand(payload) {
+  return request("/api/ai/brand", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}

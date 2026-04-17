@@ -6,6 +6,7 @@ import LiveEditor from "./components/LiveEditor";
 import SuggestionPanel from "./components/SuggestionPanel";
 import HistoryPanel from "./components/HistoryPanel";
 import AnimatedBackground from "./components/AnimatedBackground";
+import BrandMemory from "./components/BrandMemory";
 import {
   generateContent,
   transformContent,
@@ -13,7 +14,9 @@ import {
   getUsageStats,
   getHistory,
   deleteHistoryItem,
-  clearServerHistory
+  clearServerHistory,
+  getBrand,
+  saveBrand
 } from "./api/client";
 import { stripHtml, textToEditorHtml } from "./utils/content";
 
@@ -69,6 +72,12 @@ export default function App() {
     maxCostUsd: 5,
     overLimit: false
   });
+  const [brandData, setBrandData] = useState({
+    companyName: "",
+    mission: "",
+    audience: ""
+  });
+  const [activeTab, setActiveTab] = useState("generator");
   const [result, setResult] = useState(initialResultState);
 
   const [toast, setToast] = useState({
@@ -89,6 +98,7 @@ export default function App() {
   useEffect(() => {
     refreshHistory();
     refreshUsageStats();
+    refreshBrand();
 
     return () => {
       if (toastTimerRef.current) {
@@ -164,6 +174,25 @@ export default function App() {
       setUsageStats(stats);
     } catch (_error) {
       // Keep the UI usable even if usage stats fail.
+    }
+  }
+
+  async function refreshBrand() {
+    try {
+      const data = await getBrand();
+      if (data) setBrandData(data);
+    } catch (_error) {
+      console.error("Failed to load brand data.");
+    }
+  }
+
+  async function handleSaveBrand(updated) {
+    try {
+      const saved = await saveBrand(updated);
+      setBrandData(saved);
+      showToast("Brand Memory saved!!", "success");
+    } catch (error) {
+      showToast("Failed to save brand memory!!", "error");
     }
   }
 
@@ -428,30 +457,38 @@ export default function App() {
         <Sidebar
           selectedTemplate={selectedTemplate}
           onSelectTemplate={setSelectedTemplate}
+          activeTab={activeTab}
+          onSelectTab={setActiveTab}
         />
 
         <section className="main-column main-column-wide">
-          <ContentForm
-            form={form}
-            onChange={handleChange}
-            onSubmit={handleGenerate}
-            loading={loading}
-            selectedTemplate={selectedTemplate}
-            onSelectTemplate={setSelectedTemplate}
-          />
+          {activeTab === "brand" ? (
+            <BrandMemory initialData={brandData} onSave={handleSaveBrand} />
+          ) : (
+            <>
+              <ContentForm
+                form={form}
+                onChange={handleChange}
+                onSubmit={handleGenerate}
+                loading={loading}
+                selectedTemplate={selectedTemplate}
+                onSelectTemplate={setSelectedTemplate}
+              />
 
-          <LiveEditor
-            sectionRef={editorSectionRef}
-            editorValue={editorValue}
-            editorText={editorText}
-            onEditorChange={handleEditorChange}
-            onCopy={handleCopy}
-            onTransform={handleTransform}
-            onCanva={handleCanva}
-            loading={loading}
-            streaming={streaming}
-            selectedTemplate={selectedTemplate}
-          />
+              <LiveEditor
+                sectionRef={editorSectionRef}
+                editorValue={editorValue}
+                editorText={editorText}
+                onEditorChange={handleEditorChange}
+                onCopy={handleCopy}
+                onTransform={handleTransform}
+                onCanva={handleCanva}
+                loading={loading}
+                streaming={streaming}
+                selectedTemplate={selectedTemplate}
+              />
+            </>
+          )}
         </section>
 
         <aside className="right-column-stack">

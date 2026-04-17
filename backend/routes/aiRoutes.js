@@ -3,6 +3,7 @@ import { validateGenerationPayload, validateTransformPayload } from "../utils/va
 import { generateStructuredContent, transformGeneratedContent } from "../services/openaiService.js";
 import { readUsageStats } from "../services/usageService.js";
 import { getHistory, deleteGeneration, clearHistory } from "../services/historyService.js";
+import { getBrandProfile, saveBrandProfile } from "../services/brandService.js";
 
 const router = express.Router();
 
@@ -69,6 +70,25 @@ router.delete("/history", async (_req, res) => {
     res.json({ ok: true });
   } catch (error) {
     res.status(500).json({ message: "Failed to clear history." });
+  }
+});
+
+// Brand memory routes
+router.get("/brand", async (_req, res) => {
+  try {
+    const profile = await getBrandProfile();
+    res.json(profile);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to load brand profile." });
+  }
+});
+
+router.post("/brand", async (req, res) => {
+  try {
+    const profile = await saveBrandProfile(req.body);
+    res.json(profile);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to save brand profile." });
   }
 });
 

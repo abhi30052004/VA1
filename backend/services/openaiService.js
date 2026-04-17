@@ -2,6 +2,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { socialMediaPromptTemplate, transformPromptTemplate } from "../prompts/socialMediaPrompt.js";
 import { incrementUsage } from "./usageService.js";
 import { saveGeneration } from "./historyService.js";
+import { getBrandProfile } from "./brandService.js";
 
 // Shared model instance used for both first-draft generation and refinement.
 const model = new ChatOpenAI({
@@ -49,7 +50,19 @@ export async function generateStructuredContent(payload) {
     throw new Error("Missing OPENAI_API_KEY in backend environment.");
   }
 
-  const prompt = await socialMediaPromptTemplate.format(payload);
+  const brandProfile = await getBrandProfile();
+  const brandMemory = brandProfile 
+    ? `Company: ${brandProfile.companyName}, Mission: ${brandProfile.mission}. Default Audience: ${brandProfile.audience}`
+    : "None";
+
+  // If audience is generic or from client memory, prioritize it if user didn't specify.
+  const finalAudience = payload.audience || brandProfile?.audience || "Business professional";
+
+  const prompt = await socialMediaPromptTemplate.format({
+    ...payload,
+    audience: finalAudience,
+    brandMemory
+  });
   const response = await model.invoke(prompt);
   const parsed = safeJsonParse(extractResponseText(response));
   const usageStats = await incrementUsage("generate", extractTokenUsage(response));
@@ -70,9 +83,15 @@ export async function transformGeneratedContent(payload) {
     throw new Error("Missing OPENAI_API_KEY in backend environment.");
   }
 
+  const brandProfile = await getBrandProfile();
+  const brandMemory = brandProfile 
+    ? `Company: ${brandProfile.companyName}, Mission: ${brandProfile.mission}. Default Audience: ${brandProfile.audience}`
+    : "None";
+
   const prompt = await transformPromptTemplate.format({
     ...payload,
-    instruction: payload.instruction || "None"
+    instruction: payload.instruction || "None",
+    brandMemory
   });
   const response = await model.invoke(prompt);
   const parsed = safeJsonParse(extractResponseText(response));
