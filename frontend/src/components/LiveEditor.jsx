@@ -15,11 +15,12 @@ export default function LiveEditor({
   onCanva,
   loading,
   streaming,
-  selectedTemplate
+  selectedTemplate,
+  editorRef
 }) {
   const templateMeta = TEMPLATE_META[selectedTemplate] || TEMPLATE_META.instagram;
   const isBusy = loading || streaming;
-  const showSkeleton = loading && !streaming && !editorText.trim();
+  const showSkeleton = (loading || streaming) && !editorText.trim();
 
   return (
     <section ref={sectionRef} className="workspace-panel glass-card editor-panel-shell">
@@ -67,12 +68,13 @@ export default function LiveEditor({
       </div>
 
       <div className="editor-relative-container">
-        {showSkeleton && (
-          <div className="editor-skeleton-overlay">
-            <SkeletonContent />
-          </div>
-        )}
-        <RichTextEditor value={editorValue} onChange={onEditorChange} onTransform={onTransform} />
+        <RichTextEditor 
+          ref={editorRef} 
+          value={editorValue} 
+          onChange={onEditorChange} 
+          onTransform={onTransform}
+          showSkeleton={showSkeleton}
+        />
       </div>
 
       <div className="editor-footer compact-editor-footer">

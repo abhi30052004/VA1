@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useImperativeHandle, forwardRef } from "react";
 import { EditorContent, useEditor, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
+import SkeletonContent from "./SkeletonContent";
 import {
   Bold,
   Italic,
@@ -72,7 +73,7 @@ const toolbarButtons = [
 ];
 
 // Rich text editor based on Tiptap.
-export default function RichTextEditor({ value, onChange, onTransform }) {
+const RichTextEditor = forwardRef(function RichTextEditor({ value, onChange, onTransform, showSkeleton }, ref) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -94,6 +95,8 @@ export default function RichTextEditor({ value, onChange, onTransform }) {
       onChange(activeEditor.getHTML(), activeEditor.getText());
     }
   });
+
+  useImperativeHandle(ref, () => editor, [editor]);
 
   useEffect(() => {
     if (!editor) return;
@@ -215,7 +218,15 @@ export default function RichTextEditor({ value, onChange, onTransform }) {
         </button>
       </div>
 
-      <EditorContent editor={editor} />
+      {showSkeleton ? (
+        <div className="editor-skeleton-content">
+          <SkeletonContent />
+        </div>
+      ) : (
+        <EditorContent editor={editor} />
+      )}
     </div>
   );
-}
+});
+
+export default RichTextEditor;

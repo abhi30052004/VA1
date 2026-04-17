@@ -47,11 +47,7 @@ export default function Sidebar({ selectedTemplate, onSelectTemplate, activeTab,
                   </div>
 
                   <div className="platform-copy compact-platform-copy">
-                    <div className="platform-title-row">
-                      <strong>{template.label}</strong>
-                      <span className="history-template-tag platform-tag-inline">{template.badge}</span>
-                    </div>
-                    <p>{template.description}</p>
+                    <strong>{template.label}</strong>
                   </div>
                 </button>
               );

@@ -101,12 +101,12 @@ PLATFORM OPTIMIZATION:
   * benefit-driven clarity
   * no hashtags unless necessary
 
-- ad:
-  * punchy
-  * outcome-focused
-  * minimal words, maximum impact
+// - ad:
+//   * punchy
+//   * outcome-focused
+//   * minimal words, maximum impact
 
---------------------------------
+// --------------------------------
 ANTI-GENERIC FILTER (MANDATORY):
 Before finalizing, ensure:
 - no cliché openings

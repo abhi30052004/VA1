@@ -1,12 +1,13 @@
 :root {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
   color: #edf2ff;
   background:
     radial-gradient(circle at top left, rgba(91, 132, 255, 0.2), transparent 28%),
     radial-gradient(circle at bottom right, rgba(189, 67, 255, 0.18), transparent 25%),
     linear-gradient(135deg, #09101f 0%, #0d1427 50%, #101931 100%);
-  line-height: 1.5;
+  line-height: 1.6;
   font-weight: 400;
+  letter-spacing: 0.3px;
 }
 
 * {
@@ -182,12 +183,16 @@ button {
   align-items: center;
   gap: 8px;
   color: #d9e3ff;
+  font-weight: 600;
+  letter-spacing: 0.2px;
 }
 
 .section-title span,
 .mini-card-title span,
 .editor-heading-topline h3 {
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 1.02rem;
+  letter-spacing: -0.3px;
 }
 
 .platform-list-vertical {
@@ -400,14 +405,19 @@ button {
 .block-heading h3,
 .compact-controls-title h3 {
   margin: 0;
-  font-size: 1.02rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  line-height: 1.3;
 }
 
 .block-heading p,
 .compact-controls-title p {
   margin: 6px 0 0;
   color: #b4bfdf;
-  font-size: 0.92rem;
+  font-size: 0.93rem;
+  line-height: 1.5;
+  letter-spacing: 0.2px;
 }
 
 .compact-controls {
@@ -444,7 +454,9 @@ label {
   display: grid;
   gap: 8px;
   color: #e8eeff;
-  font-size: 0.94rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
 }
 
 .full-width {
@@ -461,6 +473,9 @@ select {
   border-radius: 16px;
   padding: 12px 14px;
   outline: none;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
   transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
 }
 
@@ -501,7 +516,9 @@ textarea {
   padding: 12px 18px;
   background: linear-gradient(135deg, #5d7cff, #9b64ff);
   color: white;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
   box-shadow: 0 12px 28px rgba(93, 124, 255, 0.28);
 }
 
@@ -553,6 +570,9 @@ textarea {
   gap: 8px;
   padding: 10px 12px;
   border-radius: 14px;
+  font-weight: 600;
+  font-size: 0.93rem;
+  letter-spacing: 0.2px;
 }
 
 .ghost-btn {
@@ -630,18 +650,24 @@ textarea {
 
 .tiptap-surface {
   min-height: 280px;
-  padding: 18px;
+  padding: 20px;
   outline: none;
-  line-height: 1.7;
+  line-height: 1.8;
+  font-size: 1rem;
+  letter-spacing: 0.25px;
 }
 
 .tiptap-surface p {
-  margin: 0 0 1rem;
+  margin: 0 0 1.2rem;
+  line-height: 1.8;
 }
 
 .tiptap-surface h2,
 .tiptap-surface h3 {
-  margin: 1rem 0 0.75rem;
+  margin: 1.4rem 0 0.8rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
 }
 
 .editor-footer {
@@ -1263,16 +1289,16 @@ select {
 
 /* Skeleton Loader Styles */
 .skeleton-container {
-  padding: 20px;
-  display: grid;
-  gap: 16px;
-  animation: pulse 1.8s infinite ease-in-out;
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .skeleton-line {
-  height: 14px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
+  height: 15px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08));
+  border-radius: 6px;
   position: relative;
   overflow: hidden;
 }
@@ -1284,22 +1310,17 @@ select {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
-  animation: shimmer 1.5s infinite;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  animation: shimmer 1.2s infinite;
 }
 
 .skeleton-line-short { width: 40%; }
-.skeleton-line-medium { width: 75%; }
+.skeleton-line-medium { width: 65%; }
 .skeleton-line-full { width: 100%; }
 
 @keyframes shimmer {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.8; }
-  50% { opacity: 0.5; }
 }
 
 /* Auto-save Indicator */
@@ -1335,20 +1356,13 @@ select {
   min-height: 280px;
 }
 
-.editor-skeleton-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 10;
-  background: rgba(10, 15, 30, 0.6);
-  backdrop-filter: blur(4px);
-  border-radius: 20px;
+.editor-skeleton-content {
+  padding: 16px 24px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  min-height: 120px;
 }
-
 
 
 /* Caret Streaming Styles */
@@ -1487,15 +1501,17 @@ select {
 }
 
 .sidebar-tab:hover {
-  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+  border-color: rgba(111, 145, 255, 0.55);
+  background: rgba(111, 145, 255, 0.08);
   color: var(--text-primary) !important;
 }
 
 .sidebar-tab.active {
-  background: rgba(var(--primary-rgb), 0.1);
-  border-color: rgba(var(--primary-rgb), 0.3);
+  border-color: rgba(163, 109, 255, 0.65);
+  background: rgba(163, 109, 255, 0.11);
+  box-shadow: 0 12px 26px rgba(84, 81, 255, 0.12);
   color: var(--primary) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .tab-icon {

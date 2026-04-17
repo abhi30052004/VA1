@@ -86,6 +86,7 @@ export default function App() {
   const editorSectionRef = useRef(null);
   const streamRunId = useRef(0);
   const toastTimerRef = useRef(null);
+  const editorRef = useRef(null);
 
   const canGenerate = useMemo(
     () => form.topic.trim() && form.keyMessage.trim(),
@@ -263,6 +264,13 @@ export default function App() {
     }));
   }
 
+  function handleKeyDown(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleGenerate();
+    }
+  }
+
   function saveHistoryEntry(
     data,
     payload,
@@ -370,7 +378,15 @@ export default function App() {
     if (!editorText.trim()) return;
 
     try {
-      await navigator.clipboard.writeText(editorText);
+      let textToCopy = editorText;
+      if (editorRef.current) {
+        const { from, to } = editorRef.current.state.selection;
+        const selectedText = editorRef.current.state.doc.textBetween(from, to, " ").trim();
+        if (selectedText) {
+          textToCopy = selectedText;
+        }
+      }
+      await navigator.clipboard.writeText(textToCopy);
       showToast("Copied!!", "copy");
     } catch (error) {
       showToast(error?.message || "Copy failed!!", "error");
@@ -481,6 +497,7 @@ export default function App() {
                 form={form}
                 onChange={handleChange}
                 onSubmit={handleGenerate}
+                onKeyDown={handleKeyDown}
                 loading={loading}
                 selectedTemplate={selectedTemplate}
                 onSelectTemplate={setSelectedTemplate}
@@ -497,6 +514,7 @@ export default function App() {
                 loading={loading}
                 streaming={streaming}
                 selectedTemplate={selectedTemplate}
+                editorRef={editorRef}
               />
             </>
           )}

@@ -42,14 +42,14 @@ export const TEMPLATE_LIST = [
     icon: Globe,
     actionLabel: "Copy"
   },
-  {
-    id: "ad",
-    label: "Ad Copy",
-    badge: "Ad line",
-    // description: "Promo-focused lines.",
-    icon: Megaphone,
-    actionLabel: "Ad"
-  }
+  // {
+  //   id: "ad",
+  //   label: "Ad Copy",
+  //   badge: "Ad line",
+  //   // description: "Promo-focused lines.",
+  //   icon: Megaphone,
+  //   actionLabel: "Ad"
+  // }
 ];
 
 export const TEMPLATE_META = TEMPLATE_LIST.reduce((accumulator, item) => {

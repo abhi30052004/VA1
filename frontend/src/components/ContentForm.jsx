@@ -3,7 +3,7 @@ import PromptControls from "./PromptControls";
 import { TEMPLATE_META } from "../utils/content";
 
 // Main brief form: only the few inputs needed before generation.
-export default function ContentForm({ form, onChange, onSubmit, loading, selectedTemplate, onSelectTemplate }) {
+export default function ContentForm({ form, onChange, onSubmit, onKeyDown, loading, selectedTemplate, onSelectTemplate }) {
   const templateMeta = TEMPLATE_META[selectedTemplate] || TEMPLATE_META.instagram;
 
   return (
@@ -52,6 +52,7 @@ export default function ContentForm({ form, onChange, onSubmit, loading, selecte
               rows="5"
               value={form.keyMessage}
               onChange={onChange}
+              onKeyDown={onKeyDown}
               placeholder="Main message, offer, service, or content angle..."
             />
           </label>
