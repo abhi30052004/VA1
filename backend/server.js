@@ -10,6 +10,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+// CORS allows the local frontend to talk to the backend cleanly.
 const allowedOrigins = [
   "http://localhost:5173",
   "https://contenteditor.vercel.app"
@@ -30,9 +31,9 @@ app.use(
 );
 
 app.options("*", cors());
-
 app.use(express.json());
 
+// Health check route.
 app.get("/api/health", (_req, res) => {
   res.json({
     ok: true,
@@ -40,8 +41,11 @@ app.get("/api/health", (_req, res) => {
   });
 });
 
+// Main AI routes.
 app.use("/api/ai", aiRoutes);
 
+// Canva handoff route.
+// This is a practical bridge, not a fake direct Magic Write API.
 app.post("/api/canva/handoff", (req, res) => {
   const { text = "", title = "Generated content" } = req.body || {};
   const handoff = buildCanvaHandoff({ text, title });
