@@ -37,8 +37,8 @@ npm run dev
 
 ## Configuration (.env)
 
-- `OPENAI_API_KEY`: Your API key.
-- `OPENAI_MAX_TOTAL_COST_USD`: Daily budget limit (default: $5).
-- `OPENAI_MODEL`: Model to use (default: `gpt-4o-mini`).
+- `OPENAI_API_KEY`=Your API key.
+- `OPENAI_MAX_TOTAL_COST_USD`=Daily budget limit (default: $5).
+- `OPENAI_MODEL`=Model to use (default: `gpt-4o-mini`).
 - `MONGODB_URI=mongodb+srv://username:passsword@cluster0.xxxxxx.mongodb.net/`
-- `DB_NAME=AIContentEditor`
+- `DB_NAME=Your DB name
